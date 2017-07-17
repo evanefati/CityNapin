@@ -1,0 +1,100 @@
+<md-content ng-controller="ReviewCtrl">
+
+	<md-table-toolbar>
+		<div layout="row">
+			<md-content flex-gt-md="65" flex="100">
+				<br>
+				<div layout-gt-sm="row" class="filter-bar">
+					<md-input-container class="md-block">
+						<label>Status</label>
+						<md-select ng-model="query.status" ng-change="onQueryChange()">
+							<md-option value="">
+								All
+							</md-option>
+							<md-option value="inappropriate">
+								Inappropriate
+							</md-option>
+							<md-option value="appropriate">
+								Appropriate
+							</md-option>
+						</md-select>
+					</md-input-container>
+				</div>
+			</md-content>
+		</div>
+	</md-table-toolbar>
+
+	<md-table-container>
+	  <table md-table md-progress="promise">
+	    <thead md-head>
+	      <tr md-row>
+	      	<th md-column></th>
+          <th md-column>Name</th>
+	        <th md-column>Comment</th>
+          <th md-column>Rating</th>
+          <th md-column>Place</th>
+	        <th md-column></th>
+	      </tr>
+	    </thead>
+	    <tbody md-body>
+	      <tr md-row ng-repeat="review in reviews">
+	      	<td md-cell>
+	      		<img class="img-thumb img-circle" ng-src="/images/placeholder.png"
+              actual-src="{{ review.userData.get('photo').url() }}" />
+	      	</td>
+          <td md-cell>{{ review.userData.get('name') }}</td>
+	        <td md-cell>
+						<span>
+							<md-tooltip md-direction="top">
+								{{ review.comment }}
+							</md-tooltip>
+							{{ review.comment }}
+						</span>
+					</td>
+	        <td md-cell>
+						<star-rating ng-model="review.rating" readonly="true">
+						</star-rating>
+					</td>
+	        <td md-cell>{{ review.place.get('title') }}</td>
+	        <td md-cell>
+						<span class="label"
+						  ng-class="{ 'red': review.getStatus() === 'Inappropriate' }">
+						  {{ review.getStatus() }}
+						</span>
+					</td>
+	        <td md-cell>
+				<md-menu>
+			      <md-button aria-label="Open menu" class="md-icon-button"
+			        ng-click="openMenu($mdOpenMenu, $event)">
+			        <ng-md-icon md-menu-origin icon="more_vert"
+			          layout="row" layout-align="start center">
+			        </ng-md-icon>
+			      </md-button>
+			      <md-menu-content width="3">
+
+              <md-menu-item>
+			          <md-button aria-label="Mark as appropriate"
+                  ng-click="onUpdateIsInappropriate(review, false)">
+			            Flag as appropriate
+			          </md-button>
+			        </md-menu-item>
+
+			        <md-menu-item>
+			          <md-button aria-label="Mark as inappropriate"
+                ng-click="onUpdateIsInappropriate(review, true)">
+			            Flag as inappropriate
+			          </md-button>
+			        </md-menu-item>
+
+			      </md-menu-content>
+			    </md-menu>
+	        </td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</md-table-container>
+	<md-table-pagination md-options="rowOptions" md-limit="query.limit"
+	  md-page="query.page" md-total="{{query.total}}"
+    md-on-paginate="onPaginationChange">
+	</md-table-pagination>
+</md-content>

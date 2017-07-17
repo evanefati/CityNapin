@@ -1,0 +1,40 @@
+<md-dialog aria-label="Modal" ng-cloak>
+  <form name="form" novalidate>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <span flex></span>
+        <ng-md-icon icon="close" class="icon-close" ng-click="hide()"
+          aria-label="Close dialog">
+        </ng-md-icon>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content">
+        <h4>Enter the number of days that {{ place.title }} will be approved</h4>
+        <p>
+
+        </p>
+
+        <md-input-container class="md-block">
+          <label># of days</label>
+          <input required numbers-only name="days" ng-model="formData.days">
+          <div ng-messages="form.days.$error" ng-show="form.$submitted">
+            <div ng-message="required">This field is required</div>
+          </div>
+        </md-input-container>
+
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button class="md-raised" ng-click="hide()">
+       Cancel
+      </md-button>
+      <md-button type="submit" class="md-raised md-primary"
+        ng-disabled="isSavingExpiresAt || isDayInvalid()"
+        ng-click="onUpdateExpiresAt(form.$valid)">
+        Update
+     </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

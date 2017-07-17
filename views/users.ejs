@@ -1,0 +1,76 @@
+<md-content ng-controller="UserCtrl">
+  <md-table-toolbar>
+    <div layout="row" flex>
+      <md-content flex-gt-md="30" flex="100" style="overflow: hidden">
+        <md-input-container class="md-block" flex-gt-xs>
+          <input type="text" placeholder="Search by email..."
+            ng-model="query.filter" ng-change="onSearch()"
+            ng-model-options="{ debounce: 1000 }">
+        </md-input-container>
+      </md-content>
+    </div>
+  </md-table-toolbar>
+
+  <md-table-container>
+    <table  md--table md-progress="promise">
+      <thead md-head>
+        <tr md-row>
+          <th md-column></th>
+          <th md-column>Name</th>
+          <th md-column>Email</th>
+          <th md-column>Role</th>
+          <th md-column>Created At</th>
+        </tr>
+      </thead>
+      <tbody md-body>
+        <tr md-row ng-repeat="user in users">
+         <td md-cell>
+           <img class="img-thumb img-circle" ng-src="/images/placeholder.png"
+             actual-src="{{:: user.photo.url() }}" />
+         </td>
+          <td md-cell>{{:: user.name }}</td>
+          <td md-cell>{{:: user.email }}</td>
+          <td md-cell>{{:: user.roleName }}</td>
+          <td md-cell>{{ user.createdAt | date:'mediumDate' }}</td>
+          <td md-cell>
+            <md-menu>
+              <md-button class="md-icon-button"
+                aria-label="Open menu"
+                ng-click="openMenu($mdOpenMenu, $event)">
+                <ng-md-icon md-menu-origin icon="more_vert"
+				          layout="row" layout-align="start center">
+				        </ng-md-icon>
+              </md-button>
+              <md-menu-content width="3">
+
+                <md-menu-item>
+                  <md-button aria-label="Edit user"
+                    ng-click="onUpdateUser($event, user)">
+				            Edit
+				          </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="loggedUser.id !== user.id">
+                  <md-button aria-label="Delete user"
+                    ng-click="onDeleteUser($event, user)">
+				            Delete
+				          </md-button>
+                </md-menu-item>
+
+              </md-menu-content>
+            </md-menu>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+  <md-table-pagination md-options="rowOptions" md-limit="query.limit"
+	  md-page="query.page" md-total="{{query.total}}"
+    md-on-paginate="onPaginationChange">
+	</md-table-pagination>
+  <md-button class="md-fab md-primary md-fab-bottom-right"
+   aria-label="New user" ng-click="onSaveUser($event)">
+    <ng-md-icon class="icon-add" icon="add"
+      layout="column" layout-align="center center">
+    </ng-md-icon>
+  </md-button>
+</md-content>

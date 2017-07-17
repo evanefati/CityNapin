@@ -1,0 +1,167 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CityNapinCMS</title>
+    <meta name="description" content="NearmeCMS">
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
+
+    <link rel="stylesheet" href="/bower_components/angular-material/angular-material.min.css" />
+    <link rel="stylesheet" href="/bower_components/angular-material-data-table/dist/md-data-table.min.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/nearme.css">
+
+  </head>
+
+  <body layout="column" ng-app="nearPlaceApp" md-scroll-y
+    ng-controller="MainCtrl" ng-cloak>
+    <section layout="row" flex>
+      <% if (user) { %>
+      <md-sidenav class="md-sidenav-left md-whiteframe-z2"
+        md-component-id="leftMenu" md-is-locked-open="$mdMedia('gt-lg')">
+        <md-toolbar class="md-tall">
+          <span flex></span>
+          <div layout="column" class="md-toolbar-tools-bottom inset">
+            <h5>
+              Hi, <%= user.name %>
+            </h5>
+          </div>
+        </md-toolbar>
+        <md-content>
+          <md-list-item md-no-ink href="/dashboard/places">
+            <div class="inset">
+              <ng-md-icon icon="location_on" layout="column"
+                layout-align="start center"></ng-md-icon>
+            </div>
+            <div class="inset">Places</div>
+          </md-list-item>
+
+          <md-list-item md-no-ink href="/dashboard/categories">
+            <div class="inset">
+              <ng-md-icon icon="label" layout="column"
+                layout-align="start center"></ng-md-icon>
+            </div>
+            <div class="inset">Categories</div>
+          </md-list-item>
+
+          <md-list-item md-no-ink href="/dashboard/hosts">
+            <div class="inset">
+              <ng-md-icon icon="label" layout="column"
+                layout-align="start center"></ng-md-icon>
+            </div>
+            <div class="inset">Hosts</div>
+          </md-list-item>
+
+          <md-list-item md-no-ink href="/dashboard/users">
+            <div class="inset">
+              <ng-md-icon icon="people" layout="column"
+                layout-align="start center"></ng-md-icon>
+            </div>
+            <div class="inset">Users</div>
+          </md-list-item>
+
+          <md-list-item md-no-ink href="/dashboard/reviews">
+            <div class="inset">
+              <ng-md-icon icon="star" layout="column"
+                layout-align="start center">
+              </ng-md-icon>
+            </div>
+            <div class="inset">Reviews</div>
+          </md-list-item>
+
+          <md-divider></md-divider>
+
+          <md-list-item md-no-ink href="/logout">
+            <div class="inset">
+              <ng-md-icon icon="logout" layout="column"
+               layout-align="start center"></ng-md-icon>
+            </div>
+            <div class="inset">Log Out</div>
+          </md-list-item>
+        </md-content>
+      </md-sidenav>
+      <% } %>
+
+      <md-content layout="column" flex>
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <% if (user) { %>
+            <md-button ng-click="toggle()" hide-gt-lg
+              aria-label="Menu">
+              <ng-md-icon class="icon" icon="menu"
+                layout="column" layout-align="center center">
+              </ng-md-icon>
+            </md-button>
+            <% } %>
+            <h3>CityNapinCMS</h3>
+          </div>
+        </md-toolbar>
+        <md-content flex class="content" layout-padding>
+          <div flex layout-padding>
+            <%- body %>
+          </div>
+        </md-content>
+      </md-content>
+    </section>
+
+    <script src="//maps.google.com/maps/api/js?key=AIzaSyB6gKy0w-p2swBxfZqakQnbWN_c-ag7z8w"></script>
+    <script src="/bower_components/moment/min/moment.min.js"></script>
+
+    <script src="/bower_components/angular/angular.min.js"></script>
+    <script src="/bower_components/angular-aria/angular-aria.min.js"></script>
+   <script src="/bower_components/angular-animate/angular-animate.min.js"></script>
+   <script src="/bower_components/angular-messages/angular-messages.min.js"></script>
+   <script src="/bower_components/angular-material/angular-material.min.js"></script>
+
+    <script src="/bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
+    <script src="/bower_components/angular-material-icons/angular-material-icons.min.js"></script>
+    <script src="/bower_components/angular-route/angular-route.min.js"></script>
+    <script src="/bower_components/ng-file-upload/ng-file-upload.min.js"></script>
+    <script src="/bower_components/ngmap/build/scripts/ng-map.min.js"></script>
+    <script src="/bower_components/parse/parse.min.js"></script>
+    <script src="/bower_components/angular-moment/angular-moment.min.js"></script>
+
+    <script src="/scripts/lib/img-fallback.js"></script>
+
+    <script>
+      angular.module('nearPlaceApp', ['ngAnimate', 'ngAria','ngMessages',
+      'ngRoute', 'ngMdIcons', 'md.data.table', 'ngMaterial',
+      'ngFileUpload', 'ngMap','imgFallback', 'angularMoment'
+     ]).run(function ($rootScope, Auth) {
+
+       Parse.initialize('<%= appId %>');
+       Parse.serverURL = '<%= serverUrl %>';
+
+       <% if (user) { %>
+         Auth.setSessionToken('<%= user.sessionToken %>');
+       <% } else { %>
+         if (Auth.getLoggedUser()) {
+           Auth.logOut();
+         }
+       <% } %>
+
+     }).config(function($mdThemingProvider) {
+       $mdThemingProvider.theme('default').dark().primaryPalette('yellow');
+     });
+    </script>
+
+    <script src="/scripts/controllers/MainController.js"></script>
+    <script src="/scripts/controllers/ResetPasswordController.js"></script>
+    <script src="/scripts/controllers/LoginController.js"></script>
+    <script src="/scripts/controllers/PlaceController.js"></script>
+    <script src="/scripts/controllers/ReviewController.js"></script>
+    <script src="/scripts/services/ReviewService.js"></script>
+    <script src="/scripts/services/PlaceService.js"></script>
+    <script src="/scripts/controllers/CategoryController.js"></script>
+    <script src="/scripts/services/CategoryService.js"></script>
+    <script src="/scripts/controllers/HostController.js"></script>
+    <script src="/scripts/services/HostService.js"></script>
+    <script src="/scripts/controllers/UserController.js"></script>
+    <script src="/scripts/services/UserService.js"></script>
+    <script src="/scripts/services/ToastService.js"></script>
+    <script src="/scripts/services/AuthService.js"></script>
+    <script src="/scripts/services/FileUploadService.js"></script>
+  </body>
+</html>

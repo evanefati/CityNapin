@@ -1,0 +1,93 @@
+<md-dialog flex="100" flex-gt-xs="40" aria-label="Dialog Category">
+  <form name="form" role="form" novalidate>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2 ng-show="isCreating">New category</h2>
+        <h2 ng-show="!isCreating">Edit {{::objCategory.title }}</h2>
+        <span flex></span>
+        <ng-md-icon icon="close" class="icon-close" ng-click="cancel()" aria-label="Close dialog"></ng-md-icon>
+      </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+      <md-content layout="column" layout-padding>
+
+        <md-input-container>
+          <label>Title</label>
+          <input required name="title" ng-model="objCategory.title">
+          <div ng-messages="form.title.$error" ng-show="form.$submitted">
+            <div ng-message="required">Title required</div>
+          </div>
+        </md-input-container>
+
+        <md-input-container>
+          <label>Order</label>
+          <input type="number" name="order" min="0"
+            ng-model="objCategory.order" required>
+          <div ng-messages="form.order.$error" ng-show="form.$submitted">
+            <div ng-message="required">Order required</div>
+          </div>
+        </md-input-container>
+
+        <div layout="row" layout-align="start center">
+          <md-input-container md-no-float>
+            <label>Upload Image</label>
+            <input type="text" ng-model="imageFilename" disabled>
+          </md-input-container>
+          <ng-md-icon icon="photo_camera" class="photo-camera"
+            ng-class="{ 'photo-active': objCategory.image.url() }"
+            ngf-select="uploadImage($file, $invalidFile)" ngf-max-size="4MB"
+            ngf-pattern="'image/*'" accept="image/*">
+            <md-tooltip>
+              Add an Image
+            </md-tooltip>
+          </ng-md-icon>
+          <md-progress-circular class="md-primary" md-diameter="30"
+            ng-if="isUploading">
+          </md-progress-circular>
+        </div>
+
+        <div layout="row" layout-align="start center">
+          <md-input-container md-no-float>
+            <label>Upload Icon</label>
+            <input type="text" ng-model="iconFilename" disabled>
+          </md-input-container>
+          <ng-md-icon icon="photo_camera" class="photo-camera"
+            ng-class="{ 'photo-active': objCategory.icon.url() }"
+            ngf-dimensions="$width === 64 && $height === 64"
+            ngf-select="uploadIcon($file, $invalidFile)" ngf-max-size="1MB"
+            ngf-pattern="'image/*'" accept="image/*">
+            <md-tooltip>
+              Add an Icon
+            </md-tooltip>
+          </ng-md-icon>
+          <md-progress-circular class="md-primary" md-diameter="30"
+            ng-if="isUploadingIcon">
+          </md-progress-circular>
+        </div>
+
+        <div class="hint">
+          * The icon image's dimensions should be 64x64 px
+        </div>
+
+      </md-content>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button class="md-raised" md-raised md-primary ng-click="cancel()">
+       Cancel
+      </md-button>
+      <md-button type="submit" class="md-raised md-primary" ng-show="isCreating"
+        ng-disabled="isSavingCategory"
+        ng-click="onSaveCategory(form.$valid)">
+        {{ !isSavingCategory ? 'Save' : 'Saving...' }}
+      </md-button>
+       <md-button type="submit" class="md-raised md-primary" ng-show="!isCreating"
+         ng-disabled="isSavingCategory"
+         ng-click="onUpdateCategory(form.$valid)">
+        {{ !isSavingCategory ? 'Update' : 'Updating...' }}
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

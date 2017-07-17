@@ -1,0 +1,177 @@
+<md-dialog flex="100" flex-gt-xs="40" aria-label="Place Dialog">
+  <form name="form" role="form" novalidate>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2 ng-show="isCreating">New entry</h2>
+        <h2 ng-show="!isCreating">Edit {{::place.title }}</h2>
+        <span flex></span>
+        <ng-md-icon icon="close" class="icon-close" ng-click="cancel()"
+          aria-label="Close dialog"></ng-md-icon>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <md-content layout="column" layout-padding>
+        <md-input-container class="md-block">
+          <label>Category</label>
+          <md-select name="category" required ng-model="place.category"
+            ng-model-options="{ trackBy: '$value.id' }">
+            <md-option ng-value="category"
+              ng-repeat="category in categories track by category.id">
+              {{ category.title }}
+            </md-option>
+          </md-select>
+          <div ng-messages="form.category.$error" ng-show="form.$submitted">
+            <div ng-message="required">Category required</div>
+          </div>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Title</label>
+          <input type="text" required name="title" ng-model="place.title">
+          <div ng-messages="form.title.$error" ng-show="form.$submitted">
+            <div ng-message="required">Title required</div>
+          </div>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Description</label>
+          <textarea name="description"
+            ng-maxlength="600" ng-model="place.description"
+            columns="2" md-maxlength="600">
+          </textarea>
+          <div ng-messages="form.description.$error" ng-show="form.$submitted">
+            <div ng-message="required">Description required</div>
+            <div ng-message="maxlength">Description too large</div>
+          </div>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Phone</label>
+          <input type="text" name="phone" ng-model="place.phone">
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Website</label>
+          <input type="text" name="website" ng-model="place.website">
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Address</label>
+          <input type="text" name="address" ng-model="place.address"
+            ng-model-options="{ debounce: 2000 }" ng-change="onAddressChanged()">
+        </md-input-container>
+
+        <md-input-container>
+          <ng-map class="map" scrollwheel="false"
+            map-type-control="false"
+            street-view-control="false">
+            <marker draggable="true" on-dragend="onMarkerDragEnd()"></marker>
+          </ng-map>
+        </md-input-container>
+
+        <div layout="row" layout-align="start center">
+          <md-input-container>
+            <label>Latitude</label>
+            <input type="number" name="latitude"
+              ng-change="onInputLocationChanged()"
+              ng-model-options="{debounce:1000}"
+              ng-model="input.latitude">
+          </md-input-container>
+
+          <md-input-container>
+            <label>Longitude</label>
+            <input type="number" name="longitude"
+              ng-change="onInputLocationChanged()"
+              ng-model-options="{debounce:1000}"
+              ng-model="input.longitude">
+          </md-input-container>
+        </div>
+
+        <div layout="row" layout-align="start center">
+          <md-input-container md-no-float>
+            <label>Upload image *</label>
+            <input type="text" ng-model="imageOneFilename" disabled>
+          </md-input-container>
+          <ng-md-icon icon="photo_camera" class="photo-camera"
+            ng-class="{ 'photo-active': place.image.url() }"
+            ngf-select="uploadImageOne($file, $invalidFile)" ngf-max-size="2MB"
+            ngf-pattern="'image/*'" accept="image/*">
+            <md-tooltip>
+              Add image
+            </md-tooltip>
+          </ng-md-icon>
+          <md-progress-circular class="md-primary" md-diameter="30"
+            ng-if="isImageOneUploading">
+          </md-progress-circular>
+        </div>
+        <div layout="row" layout-align="start center">
+          <md-input-container md-no-float>
+            <label>Upload image</label>
+            <input type="text" ng-model="imageTwoFilename" disabled>
+          </md-input-container>
+          <ng-md-icon icon="photo_camera" class="photo-camera"
+            ng-class="{ 'photo-active': place.imageTwo.url() }"
+            ngf-select="uploadImageTwo($file, $invalidFile)" ngf-max-size="2MB"
+            ngf-pattern="'image/*'" accept="image/*">
+            <md-tooltip>
+              Add image
+            </md-tooltip>
+          </ng-md-icon>
+          <md-progress-circular class="md-primary" md-diameter="30"
+            ng-if="isImageTwoUploading">
+          </md-progress-circular>
+        </div>
+        <div layout="row" layout-align="start center">
+          <md-input-container md-no-float>
+            <label>Upload image</label>
+            <input type="text" ng-model="imageThreeFilename" disabled>
+          </md-input-container>
+          <ng-md-icon icon="photo_camera" class="photo-camera"
+            ng-class="{ 'photo-active': place.imageThree.url() }"
+            ngf-select="uploadImageThree($file, $invalidFile)" ngf-max-size="2MB"
+            ngf-pattern="'image/*'" accept="image/*">
+            <md-tooltip>
+              Add image
+            </md-tooltip>
+          </ng-md-icon>
+          <md-progress-circular class="md-primary" md-diameter="30"
+            ng-if="isImageThreeUploading">
+          </md-progress-circular>
+        </div>
+        <div layout="row" layout-align="start center">
+          <md-input-container md-no-float>
+            <label>Upload image</label>
+            <input type="text" ng-model="imageFourFilename" disabled>
+          </md-input-container>
+          <ng-md-icon icon="photo_camera" class="photo-camera"
+            ng-class="{ 'photo-active': place.imageFour.url() }"
+            ngf-select="uploadImageFour($file, $invalidFile)" ngf-max-size="2MB"
+            ngf-pattern="'image/*'" accept="image/*">
+            <md-tooltip>
+              Add image
+            </md-tooltip>
+          </ng-md-icon>
+          <md-progress-circular class="md-primary" md-diameter="30"
+            ng-if="isImageFourUploading">
+          </md-progress-circular>
+        </div>
+      </md-content>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button class="md-raised" md-raised md-primary ng-click="cancel()">
+       Cancel
+      </md-button>
+      <md-button type="submit" class="md-raised md-primary" ng-click="onSavePlace(form.$valid)"
+        ng-disabled="isSavingPlace"
+        ng-show="isCreating">
+        {{ !isSavingPlace ? 'Save' : 'Saving...' }}
+      </md-button>
+      <md-button type="submit" class="md-raised md-primary" ng-click="onUpdatePlace(form.$valid)"
+        ng-disabled="isSavingPlace"
+        ng-show="!isCreating">
+        {{ !isSavingPlace ? 'Update' : 'Updating...' }}
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

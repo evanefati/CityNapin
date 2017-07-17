@@ -1,0 +1,160 @@
+<md-content ng-controller="PlaceCtrl">
+	<md-table-toolbar>
+		<div layout="row">
+			<md-content flex-gt-md="65" flex="100" style="overflow: hidden">
+				<br>
+				<div layout-gt-sm="row" class="filter-bar">
+					<md-input-container class="md-block" flex-gt-xs>
+						<label>Search by Title</label>
+						<input type="text" ng-model="query.filter"
+							ng-model-options="{ debounce: 1000 }" ng-change="onQueryChange()">
+					</md-input-container>
+
+					<md-input-container class="md-block" flex-gt-xs>
+						<label>Hosts</label>
+						<md-select ng-model="query.host" ng-change="onQueryChange()">
+							<md-option value="">
+								All
+							</md-option>
+							<md-option ng-value="category" value="{{ category }}"
+								ng-repeat="category in categories">
+								{{ category.name }}
+							</md-option>
+						</md-select>
+					</md-input-container>
+					<md-input-container class="md-block" flex-gt-xs>
+						<label>Status</label>
+						<md-select ng-model="query.status" ng-change="onQueryChange()">
+							<md-option value="">
+								All
+							</md-option>
+							<md-option value="pending">
+								Pending
+							</md-option>
+							<md-option value="approved">
+								Approved
+							</md-option>
+							<md-option value="rejected">
+								Rejected
+							</md-option>
+							<!-- <md-option value="expired">
+								Expired
+							</md-option> -->
+							<!-- <md-option value="expireInTenDays">
+								Expires in 10 days
+							</md-option>
+							<md-option value="expireInThirtyDays">
+								Expires in 30 days
+							</md-option> -->
+						</md-select>
+					</md-input-container>
+					<md-datepicker ng-model="query.date" ng-change="onQueryChange()"
+						md-placeholder="Enter date" flex-gt-xs>
+					</md-datepicker>
+				</div>
+			</md-content>
+		</div>
+	</md-table-toolbar>
+
+	<md-table-container>
+	  <table md-table md-progress="promise">
+	    <thead md-head>
+	      <tr md-row>
+	      	<th md-column></th>
+	        <th md-column>Title</th>
+	        <th md-column>Host</th>
+	        <th md-column>Status</th>
+			<!-- <th md-column>Expires At</th> -->
+			<th md-column>Created At</th>
+			<th name="Actions">
+	      </tr>
+	    </thead>
+	    <tbody md-body>
+	      <tr md-row ng-repeat="place in places">
+	      	<td md-cell>
+	      		<img class="img-thumb img-circle" ng-src="/images/placeholder.png"
+						actual-src="{{ place.imageThumb.url() }}" />
+	      	</td>
+	      	<td md-cell>{{:: place.title }}</td>
+	        <td md-cell>{{:: place.category.get('title') }}</td>
+			<td md-cell>
+				<span class="label"
+				  ng-class="{ 'green': place.getStatus() === 'Approved',
+					'red': place.getStatus() === 'Rejected',
+					'orange': place.getStatus() === 'Expired',
+				  'yellow': place.getStatus() === 'Pending' }">
+				  {{ place.getStatus() }}
+				</span>
+			</td>
+			<!-- <td md-cell>
+				<span ng-if="isDate(place.expiresAt)">
+					{{ place.expiresAt | date:'medium' }}
+				</span>
+			</td> -->
+			<td md-cell>{{ place.createdAt | date:'mediumDate' }}</td>
+	        <td md-cell>
+				<md-menu>
+			      <md-button aria-label="Open menu" class="md-icon-button"
+			        ng-click="openMenu($mdOpenMenu, $event)">
+			        <ng-md-icon md-menu-origin icon="more_vert"
+			          layout="row" layout-align="start center">
+			        </ng-md-icon>
+			      </md-button>
+			      <md-menu-content width="3">
+
+			        <md-menu-item>
+			          <md-button aria-label="Edit place"
+								  ng-click="onUpdatePlace($event, place)">
+			            Edit
+			          </md-button>
+			        </md-menu-item>
+
+			        <md-menu-item aria-label="Delete place">
+			          <md-button aria-label="Delete place"
+								  ng-click="onDestroyPlace($event, place)">
+			            Delete
+			          </md-button>
+			        </md-menu-item>
+
+							<md-divider></md-divider>
+
+					<md-menu-item>
+			          <md-button aria-label="Approve place"
+								  ng-click="onUpdateIsApproved(place, true)">
+			            Approve
+			          </md-button>
+			        </md-menu-item>
+
+					<!-- <md-menu-item>
+						<md-button aria-label="Approve place for # days"
+						  ng-click="onUpdateExpiresAt($event, place)">
+							Approve # days
+						</md-button>
+					</md-menu-item> -->
+
+					<md-menu-item>
+			          <md-button aria-label="Reject place"
+								  ng-click="onUpdateIsApproved(place, false)">
+			            Reject
+			          </md-button>
+			        </md-menu-item>
+
+			      </md-menu-content>
+			    </md-menu>
+	        </td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</md-table-container>
+	<md-table-pagination md-options="rowOptions" md-limit="query.limit"
+	  md-page="query.page" md-total="{{query.total}}"
+		md-on-paginate="onPaginationChange">
+	</md-table-pagination>
+
+  <md-button class="md-fab md-primary md-fab-bottom-right"
+    aria-label="New Place" ng-click="onCreatePlace($event)">
+    <ng-md-icon class="icon-add" icon="add"
+      layout="column" layout-align="center center">
+    </ng-md-icon>
+  </md-button>
+</md-content>

@@ -1,0 +1,39 @@
+<md-content class="login-content" layout layout-align="center">
+  <md-card flex-gt-sm="25" flex="100">
+    <% if (locals.flash) { %>
+    <md-toolbar class="md-accent">
+        <p class="md-toolbar-tools">
+          <small><%= flash %> </small>
+        </p>
+      </md-toolbar>
+      <br>
+    <% } %>
+    <form name="form" action="/install" method="post">
+      <md-card-content layout="column">
+        <md-input-container>
+          <label>Name</label>
+          <input type="text" name="name"
+            value="<%= (locals.input) ? input.name : '' %>">
+        </md-input-container>
+        <md-input-container>
+          <label>Email</label>
+          <input type="text" name="username"
+          value="<%= (locals.input) ? input.username : '' %>">
+        </md-input-container>
+        <md-input-container>
+          <label>Password</label>
+          <input type="password" name="password">
+        </md-input-container>
+        <md-input-container>
+          <label>Confirm Password</label>
+          <input type="password" name="passwordConfirmation">
+        </md-input-container>
+      </md-card-content>
+      <div class="md-actions" layout="row" layout-align="end center">
+        <md-button type="submit" md-no-ink class="md-primary">
+          Install
+        </md-button>
+      </div>
+    </form>
+  </md-card>
+</md-content>

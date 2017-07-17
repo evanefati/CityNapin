@@ -1,0 +1,76 @@
+<md-content ng-controller="CategoryCtrl">
+ 	<md-table-toolbar>
+    <div layout="row">
+	    <md-content flex-gt-md="40" flex="100">
+	      <md-input-container class="md-block" flex-gt-xs>
+    		  <input type="text" placeholder="Search by title..." ng-model="query.filter"
+    		    ng-model-options="{ debounce: 1000 }" ng-change="onSearch()">
+  	    </md-input-container>
+      </md-content>
+    </div>
+  </md-table-toolbar>
+	<md-table-container>
+	  <table md-table md-progress="promise">
+	    <thead md-head md-order="query.order" md-trigger="onOrderChange">
+	      <tr md-row>
+	      	<th md-column></th>
+          <th md-column>Icon</th>
+	        <th md-column>Title</th>
+          <th md-column md-order-by="order">Order</th>
+	        <th md-column></th>
+	      </tr>
+	    </thead>
+	    <tbody md-body>
+	      <tr md-row ng-repeat="category in categories">
+	      	<td md-cell>
+	      		<img class="img-thumb img-circle" ng-src="/images/placeholder.png"
+              actual-src="{{ category.imageThumb.url() }}"/>
+	      	</td>
+          <td md-cell>
+	      		<img width="32" height="32" ng-src="/images/placeholder.png"
+              actual-src="{{ category.icon.url() }}" />
+	      	</td>
+	        <td md-cell>{{:: category.title }}</td>
+	        <td md-cell>{{:: category.order }}</td>
+	        <td md-cell>
+				<md-menu>
+			      <md-button aria-label="Open menu" class="md-icon-button"
+			        ng-click="openMenu($mdOpenMenu, $event)">
+			        <ng-md-icon md-menu-origin icon="more_vert"
+			          layout="row" layout-align="start center">
+			        </ng-md-icon>
+			      </md-button>
+			      <md-menu-content width="3">
+
+			        <md-menu-item>
+			          <md-button aria-label="Edit category"
+								  ng-click="onEditCategory($event, category)">
+			            Edit
+			          </md-button>
+			        </md-menu-item>
+
+			        <md-menu-item>
+			          <md-button aria-label="Delete category"
+								  ng-click="onDestroyCategory($event, category)">
+			            Delete
+			          </md-button>
+			        </md-menu-item>
+
+			      </md-menu-content>
+			    </md-menu>
+	        </td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</md-table-container>
+	<md-table-pagination md-options="rowOptions" md-limit="query.limit"
+	  md-page="query.page" md-total="{{query.total}}"
+    md-on-paginate="onPaginationChange">
+	</md-table-pagination>
+  <md-button class="md-fab md-primary md-fab-bottom-right"
+    aria-label="New category" ng-click="onNewCategory($event)">
+    <ng-md-icon class="icon-add" icon="add"
+      layout="column" layout-align="center center">
+    </ng-md-icon>
+  </md-button>
+</md-content>

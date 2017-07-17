@@ -1,0 +1,31 @@
+<md-content class="login-content" layout layout-align="center" layout-wrap>
+  <md-card flex-gt-sm="25" flex="100">
+    <% if (locals.flash) { %>
+    <md-toolbar class="md-accent">
+        <p class="md-toolbar-tools">
+          <small><%= flash %> </small>
+        </p>
+      </md-toolbar>
+      <br>
+    <% } %>
+    <form name="form" action="/login" method="post" novalidate>
+      <md-card-content layout="column">
+        <md-input-container>
+          <label>Email</label>
+          <input type="text" name="username">
+        </md-input-container>
+        <md-input-container>
+          <label>Password</label>
+          <input type="password" name="password">
+        </md-input-container>
+      </md-card-content>
+      <div class="md-actions" layout="row">
+        <md-button href="/reset-password" md-no-ink>
+          Forgot password?
+        </md-button>
+        <span flex></span>
+        <md-button type="submit" md-no-ink class="md-primary">Log In</md-button>
+      </div>
+    </form>
+  </md-card>
+</md-content>
