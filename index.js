@@ -11,9 +11,9 @@ var cookieSession = require('cookie-session');
 // Parse configuration
 var databaseUri = process.env.MONGO_URL;
 var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'http://localhost:1337/parse';
-var serverUrl = process.env.SERVER_URL || 'http://localhost:1337/parse';
-var appId = process.env.APP_ID || 'myAppId';
-var masterKey = process.env.MASTER_KEY || 'myMasterKey';
+var serverUrl = process.env.SERVER_URL || 'https://citynapincms.herokuapp.com/parse';
+var appId = process.env.APP_ID || '6%_Q043el{#u~(9zrf$U';
+var masterKey = process.env.MASTER_KEY || '7]R]X_u4)5N=L{9jbE/F';
 var restApiKey = process.env.REST_API_KEY || 'myRestApiKey';
 var appName = process.env.APP_NAME || 'My App Name';
 
@@ -36,7 +36,7 @@ if (accessKeyId && secretAccessKey && bucketName) {
 }
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://localhost:27017/dev',
+  databaseURI: databaseUri || 'mongodb://heroku_7pswj97t:ike0333u29qo7ltcg7sr8ov8j1@ds163672.mlab.com:63672/heroku_7pswj97t',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: appId,
   masterKey: masterKey,
