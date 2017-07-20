@@ -15,7 +15,7 @@ var serverUrl = process.env.SERVER_URL || 'https://arcane-fjord-73553.herokuapp.
 var appId = process.env.APP_ID || '6%_Q043el{#u~(9zrf$U';
 var masterKey = process.env.MASTER_KEY || '7]R]X_u4)5N=L{9jbE/F';
 var restApiKey = process.env.REST_API_KEY || 'myRestApiKey';
-var appName = process.env.APP_NAME || 'My App Name';
+var appName = process.env.APP_NAME || 'citynapincms';
 
 // Mailgun configuration
 var apiKey = process.env.MAILGUN_API_KEY || 'MAILGUN_API_KEY';
