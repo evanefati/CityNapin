@@ -10,8 +10,8 @@ var cookieSession = require('cookie-session');
 
 // Parse configuration
 var databaseUri = process.env.MONGO_URL;
-var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'https://citynapin.herokuapp.com/parse';
-var serverUrl = process.env.SERVER_URL || 'https://citynapin.herokuapp.com/parse';
+var publicServerUrl = process.env.PUBLIC_SERVER_URL || 'https://ctncms.herokuapp.com//parse';
+var serverUrl = process.env.SERVER_URL || 'https://ctncms.herokuapp.com//parse';
 var appId = process.env.APP_ID || '6%_Q043el{#u~(9zrf$U';
 var masterKey = process.env.MASTER_KEY || '7]R]X_u4)5N=L{9jbE/F';
 var restApiKey = process.env.REST_API_KEY || 'myRestApiKey';
