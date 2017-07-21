@@ -431,8 +431,8 @@
 
  		if (!isFormValid) {
  			showSimpleToast('Please correct all highlighted errors and try again');
- 		} else if (!$scope.place.image) {
- 			showSimpleToast('Upload at least the first image');
+//  		} else if (!$scope.place.image) {
+//  			showSimpleToast('Upload at least the first image');
  		}  else if (!$scope.place.location) {
  			showSimpleToast('Ubication is required')
  		}
