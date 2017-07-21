@@ -36,7 +36,7 @@ if (accessKeyId && secretAccessKey && bucketName) {
 }
 
 var api = new ParseServer({
-  databaseURI: databaseUri || 'mongodb://heroku_7pswj97t:ike0333u29qo7ltcg7sr8ov8j1@ds163672.mlab.com:63672/heroku_7pswj97t',
+  databaseURI: databaseUri || 'mongodb://heroku_8cqbnzsg:rik1k774bfh7ic601drun927f1@ds115583.mlab.com:15583/heroku_8cqbnzsg',
   cloud: process.env.CLOUD_CODE_MAIN || __dirname + '/cloud/main.js',
   appId: appId,
   masterKey: masterKey,
